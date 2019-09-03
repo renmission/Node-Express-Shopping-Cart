@@ -1,0 +1,38 @@
+<%- include('../_layouts/adminheader') %>
+    <br>
+    <h2 class="page-title">Products</h2>
+    <a href="/admin/products/add-product" class="btn btn-secondary">
+        << Add new product</a>
+            <br><br>
+
+            <% if(count > 0) {%>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Product Image</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% products.forEach( function(product) { %>
+                        <tr>
+                            <td><%= product.title %></td>
+                            <td><%= parseFloat(product.price).toFixed(2) %></td>
+                            <td><%= product.category %></td>
+                            <td><a href="/admin/products/edit-product/<%= product.slug %>">Edit</a></td>
+                            <td><a class="confirmDeletion" href="/admin/products/delete-product/<%= product.id %>">Delete</a></td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+
+            <% } else { %>
+            <h3 class="text-center">There are no product.</h3>
+            <% } %>
+
+            <%- include('../_layouts/adminfooter') %>

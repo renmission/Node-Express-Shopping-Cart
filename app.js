@@ -5,6 +5,7 @@ const config = require('./config/config');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const flash = require('connect-flash');
+const fileUpload = require('express-fileupload');
 
 // init app
 const app = express();
@@ -37,7 +38,7 @@ app.use(session({
 
 // Express Messages middleware
 app.use(require('connect-flash')());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.messages = require('express-messages')(req, res);
     next();
 });
@@ -49,11 +50,15 @@ app.use(express.static(path.join(__dirname + '/public')));
 // Set global errors variable
 app.locals.errors = null;
 
+//express fileupload
+app.use(fileUpload());
+
 
 // set routes
 app.use('/', require('./routes/pages'));
 app.use('/admin/pages', require('./routes/admin_pages'));
 app.use('/admin/categories', require('./routes/admin_categories'));
+app.use('/admin/products', require('./routes/admin_products'));
 
 // start the server
 const port = process.env.PORT || 3000;

@@ -1,0 +1,62 @@
+<%- include('../_layouts/adminheader') %>
+    <br>
+    <h2 class="page-title">Add a Product</h2>
+    <a href="/admin/products" class="btn btn-secondary">
+        << Back to products</a>
+            <br><br>
+
+            <form action="/admin/products/add-product" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="">Name</label>
+                    <input type="text" name="name" class="form-control" value="<%= name %>" placeholder="Enter Name">
+                </div>
+                <div class="form-group">
+                    <label for="">Desciption</label>
+                     <textarea name="content" cols="30" rows="10" id="ta" class="form-control">
+                     <%= desc %>
+                     </textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Categories</label>
+                    <select name="category" class="form-control">
+                        <% categories.forEach(cat => { %>
+                            <option value="<%= cat.slug %>"><%= cat.title %></option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Price</label>
+                    <input type="text" name="price" class="form-control" value="<%= price %>" placeholder="Enter Price">
+                </div>
+
+                 <div class="form-group">
+                    <label for="">Image</label>
+                    <input type="file" name="image" class="form-control" id="img">
+                    <img src="#" id="imgPreview" alt="">
+                </div>
+
+                <button class="btn btn-primary">Submit</button>
+            </form>
+
+
+            <script>
+                function readUrl(input) {
+                    if(input.file && input.file[0]) {
+                        let reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            $("#imgPreview").attr("src", e.targer.result).width(100).height(100);
+                        }
+                        reader.readAsDataUrl(input.file[0]);
+                    } 
+                };
+
+                $("#img").change( function() {
+                    readUrl(this);
+                });
+            </script>
+
+
+            <%- include('../_layouts/adminfooter') %>
