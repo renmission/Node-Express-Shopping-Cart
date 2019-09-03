@@ -10,7 +10,10 @@ const flash = require('connect-flash');
 const app = express();
 
 // db connect
-mongoose.connect(config.database, { useNewUrlParser: true }, (err) => {
+mongoose.connect(config.database, {
+    useNewUrlParser: true,
+    useFindAndModify: false
+}, (err) => {
     if (err) return console.log(err);
     console.log('DB CONNECTED');
 });
@@ -24,22 +27,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // express session middleware
+// resave: true, remove cookie: { secure: true } to unable the connect-flash
 app.use(session({
     secret: 'keyboard cat',
-    resave: false,
+    resave: true, // make this true
     saveUninitialized: true,
-    cookie: { secure: true }
+    // cookie: { secure: true } - REMOVE THIS
 }));
 
-// express messages middleware
-app.use(flash());
-
-//Local varibales using middleware
-app.use((req, res, next) => {
-    res.locals.user = req.user || null;
-    res.locals.success_message = req.flash('success_message');
-    res.locals.error_message = req.flash('error_message');
-    res.locals.errors = req.flash('errors');
+// Express Messages middleware
+app.use(require('connect-flash')());
+app.use(function(req, res, next) {
+    res.locals.messages = require('express-messages')(req, res);
     next();
 });
 
@@ -47,12 +46,14 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname + '/public')));
 
 
-//set error global
+// Set global errors variable
 app.locals.errors = null;
+
 
 // set routes
 app.use('/', require('./routes/pages'));
 app.use('/admin/pages', require('./routes/admin_pages'));
+app.use('/admin/categories', require('./routes/admin_categories'));
 
 // start the server
 const port = process.env.PORT || 3000;

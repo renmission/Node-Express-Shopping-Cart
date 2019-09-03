@@ -1,31 +1,26 @@
 <%- include('../_layouts/adminheader') %>
     <br>
-    <h2 class="page-title">Pages</h2>
-    <a href="/admin/pages/add-page" class="btn btn-secondary">
-        << Add new page</a>
+    <h2 class="page-title">Categories</h2>
+    <a href="/admin/categories/add-category" class="btn btn-secondary">
+        << Add new category</a>
             <br><br>
 
-            <table class="table table-striped sorting">
+            <table class="table table-striped">
                 <thead>
-                    <tr class="home">
-                        <th>Title</th>
+                    <tr>
+                        <th>Category</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% pages.forEach( function(page) { %>
-                        <tr id="id_<%= page._id %>" class="<%= page.slug %>">
+                    <% categories.forEach( function(cat) { %>
+                        <tr>
                             <td>
-                                <%= page.title %>
+                                <%= cat.title %>
                             </td>
-                            <td><a href="/admin/pages/edit-page/<%= page.slug %>">Edit</a></td>
-                            <% if(page.slug === "home") { %>
-                                <td></td>
-                                <% } else {%>
-                                    <td><a class="confirmDeletion" href="/admin/pages/delete-page/<%= page.id %>">Delete</a></td>
-                                    <% } %>
-
+                            <td><a href="/admin/pages/edit-category/<%= cat.slug %>">Edit</a></td>
+                            <td><a class="confirmDeletion" href="/admin/pages/delete-category/<%= cat.id %>">Delete</a></td>
                         </tr>
                         <% }); %>
                 </tbody>
